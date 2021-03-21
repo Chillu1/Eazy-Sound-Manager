@@ -142,18 +142,18 @@ namespace Hellmade.Sound
         /// </summary>
         /// <param name="audioType">The audio type of the dictionary to return</param>
         /// <returns>An audio dictionary</returns>
-        private static Dictionary<int, Audio> GetAudioTypeDictionary(Audio.AudioType audioType)
+        private static Dictionary<int, Audio> GetAudioTypeDictionary(AudioType audioType)
         {
             Dictionary<int, Audio> audioDict = new Dictionary<int, Audio>();
             switch (audioType)
             {
-                case Audio.AudioType.Music:
+                case AudioType.Music:
                     audioDict = musicAudio;
                     break;
-                case Audio.AudioType.Sound:
+                case AudioType.Sound:
                     audioDict = soundsAudio;
                     break;
-                case Audio.AudioType.UISound:
+                case AudioType.UISound:
                     audioDict = UISoundsAudio;
                     break;
             }
@@ -166,15 +166,15 @@ namespace Hellmade.Sound
         /// </summary>
         /// <param name="audioType">The audio type that the returned IgnoreDuplicates setting affects</param>
         /// <returns>An IgnoreDuplicates setting (bool)</returns>
-        private static bool GetAudioTypeIgnoreDuplicateSetting(Audio.AudioType audioType)
+        private static bool GetAudioTypeIgnoreDuplicateSetting(AudioType audioType)
         {
             switch (audioType)
             {
-                case Audio.AudioType.Music:
+                case AudioType.Music:
                     return IgnoreDuplicateMusic;
-                case Audio.AudioType.Sound:
+                case AudioType.Sound:
                     return IgnoreDuplicateSounds;
-                case Audio.AudioType.UISound:
+                case AudioType.UISound:
                     return IgnoreDuplicateUISounds;
                 default:
                     return false;
@@ -255,7 +255,7 @@ namespace Hellmade.Sound
         /// <param name="audioType">The audio type of the audio to restore</param>
         /// <param name="audioID">The ID of the audio to be restored</param>
         /// <returns>True if the audio is restored, false if the audio was not in the audio pool.</returns>
-        public static bool RestoreAudioFromPool(Audio.AudioType audioType, int audioID)
+        public static bool RestoreAudioFromPool(AudioType audioType, int audioID)
         {
             if(audioPool.ContainsKey(audioID))
             {
@@ -336,7 +336,7 @@ namespace Hellmade.Sound
         /// <returns>Music Audio that has as its id the audioID if one is found, null if no such Audio is found</returns>
         public static Audio GetMusicAudio(int audioID)
         {
-            return GetAudio(Audio.AudioType.Music, true, audioID);
+            return GetAudio(AudioType.Music, true, audioID);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace Hellmade.Sound
         /// <returns>First occurrence of music Audio that has as plays the audioClip, null if no such Audio is found</returns>
         public static Audio GetMusicAudio(AudioClip audioClip)
         {
-            return GetAudio(Audio.AudioType.Music, true, audioClip);
+            return GetAudio(AudioType.Music, true, audioClip);
         }
 
         /// <summary>
@@ -356,7 +356,7 @@ namespace Hellmade.Sound
         /// <returns>Sound fx Audio that has as its id the audioID if one is found, null if no such Audio is found</returns>
         public static Audio GetSoundAudio(int audioID)
         {
-            return GetAudio(Audio.AudioType.Sound, true, audioID);
+            return GetAudio(AudioType.Sound, true, audioID);
         }
 
         /// <summary>
@@ -366,7 +366,7 @@ namespace Hellmade.Sound
         /// <returns>First occurrence of sound Audio that has as plays the audioClip, null if no such Audio is found</returns>
         public static Audio GetSoundAudio(AudioClip audioClip)
         {
-            return GetAudio(Audio.AudioType.Sound, true, audioClip);
+            return GetAudio(AudioType.Sound, true, audioClip);
         }
 
         /// <summary>
@@ -376,7 +376,7 @@ namespace Hellmade.Sound
         /// <returns>UI sound fx Audio that has as its id the audioID if one is found, null if no such Audio is found</returns>
         public static Audio GetUISoundAudio(int audioID)
         {
-            return GetAudio(Audio.AudioType.UISound, true, audioID);
+            return GetAudio(AudioType.UISound, true, audioID);
         }
 
         /// <summary>
@@ -386,10 +386,10 @@ namespace Hellmade.Sound
         /// <returns>First occurrence of UI sound Audio that has as plays the audioClip, null if no such Audio is found</returns>
         public static Audio GetUISoundAudio(AudioClip audioClip)
         {
-            return GetAudio(Audio.AudioType.UISound, true, audioClip);
+            return GetAudio(AudioType.UISound, true, audioClip);
         }
 
-        private static Audio GetAudio(Audio.AudioType audioType, bool usePool, int audioID)
+        private static Audio GetAudio(AudioType audioType, bool usePool, int audioID)
         {
             Dictionary<int, Audio> audioDict = GetAudioTypeDictionary(audioType);
 
@@ -406,7 +406,7 @@ namespace Hellmade.Sound
             return null;
         }
 
-        private static Audio GetAudio(Audio.AudioType audioType, bool usePool, AudioClip audioClip)
+        private static Audio GetAudio(AudioType audioType, bool usePool, AudioClip audioClip)
         {
             Dictionary<int, Audio> audioDict = GetAudioTypeDictionary(audioType);
 
@@ -442,138 +442,6 @@ namespace Hellmade.Sound
         #region Prepare Function
 
         /// <summary>
-        /// Prepares and initializes background music
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareMusic(AudioClip clip)
-        {
-            return PrepareAudio(Audio.AudioType.Music, clip, 1f, false, false, 1f, 1f, null);
-        }
-
-        /// <summary>
-        /// Prepares and initializes background music
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <param name="volume"> The volume the music will have</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareMusic(AudioClip clip, float volume)
-        {
-            return PrepareAudio(Audio.AudioType.Music, clip, volume, false, false, 1f, 1f, null);
-        }
-
-        /// <summary>
-        /// Prepares and initializes background music
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <param name="volume"> The volume the music will have</param>
-        /// <param name="loop">Wether the music is looped</param>
-        /// <param name = "persist" > Whether the audio persists in between scene changes</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareMusic(AudioClip clip, float volume, bool loop, bool persist)
-        {
-            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, 1f, 1f, null);
-        }
-
-        /// <summary>
-        /// Prerpares and initializes background music
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <param name="volume"> The volume the music will have</param>
-        /// <param name="loop">Wether the music is looped</param>
-        /// <param name="persist"> Whether the audio persists in between scene changes</param>
-        /// <param name="fadeInValue">How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)</param>
-        /// <param name="fadeOutValue"> How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds)
-        {
-            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, null);
-        }
-
-        /// <summary>
-        /// Prepares and initializes background music
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <param name="volume"> The volume the music will have</param>
-        /// <param name="loop">Wether the music is looped</param>
-        /// <param name="persist"> Whether the audio persists in between scene changes</param>
-        /// <param name="fadeInValue">How many seconds it needs for the audio to fade in/ reach target volume (if higher than current)</param>
-        /// <param name="fadeOutValue"> How many seconds it needs for the audio to fade out/ reach target volume (if lower than current)</param>
-        /// <param name="currentMusicfadeOutSeconds"> How many seconds it needs for current music audio to fade out. It will override its own fade out seconds. If -1 is passed, current music will keep its own fade out seconds</param>
-        /// <param name="sourceTransform">The transform that is the source of the music (will become 3D audio). If 3D audio is not wanted, use null</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
-        {
-            return PrepareAudio(Audio.AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, sourceTransform);
-        }
-
-        /// <summary>
-        /// Prepares and initializes a sound fx
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareSound(AudioClip clip)
-        {
-            return PrepareAudio(Audio.AudioType.Sound, clip, 1f, false, false, 0f, 0f, null);
-        }
-
-        /// <summary>
-        /// Prepares and initializes a sound fx
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <param name="volume"> The volume the music will have</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareSound(AudioClip clip, float volume)
-        {
-            return PrepareAudio(Audio.AudioType.Sound, clip, volume, false, false, 0f, 0f, null);
-        }
-
-        /// <summary>
-        /// Prepares and initializes a sound fx
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <param name="loop">Wether the sound is looped</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareSound(AudioClip clip, bool loop)
-        {
-            return PrepareAudio(Audio.AudioType.Sound, clip, 1f, loop, false, 0f, 0f, null);
-        }
-
-        /// <summary>
-        /// Prepares and initializes a sound fx
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <param name="volume"> The volume the music will have</param>
-        /// <param name="loop">Wether the sound is looped</param>
-        /// <param name="sourceTransform">The transform that is the source of the sound (will become 3D audio). If 3D audio is not wanted, use null</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareSound(AudioClip clip, float volume, bool loop, Transform sourceTransform)
-        {
-            return PrepareAudio(Audio.AudioType.Sound, clip, volume, loop, false, 0f, 0f, sourceTransform);
-        }
-
-        /// <summary>
-        /// Prepares and initializes a UI sound fx
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareUISound(AudioClip clip)
-        {
-            return PrepareAudio(Audio.AudioType.UISound, clip, 1f, false, false, 0f, 0f, null);
-        }
-
-        /// <summary>
-        /// Prepares and initializes a UI sound fx
-        /// </summary>
-        /// <param name="clip">The audio clip to prepare</param>
-        /// <param name="volume"> The volume the music will have</param>
-        /// <returns>The ID of the created Audio object</returns>
-        public static int PrepareUISound(AudioClip clip, float volume)
-        {
-            return PrepareAudio(Audio.AudioType.UISound, clip, volume, false, false, 0f, 0f, null);
-        }
-
-        /// <summary>
         /// Prepares and initializes an audioType of choice
         /// </summary>
         /// <param name="properties">All audio properties (loop, persist, clip, etc)</param>
@@ -584,7 +452,7 @@ namespace Hellmade.Sound
                 , properties.fadeInSeconds, properties.fadeOutSeconds, properties.sourceTransform, properties.keep);
         }
 
-        private static int PrepareAudio(Audio.AudioType audioType, AudioClip clip, float volume, bool loop, bool persist,
+        private static int PrepareAudio(AudioType audioType, AudioClip clip, float volume, bool loop, bool persist,
             float fadeInSeconds, float fadeOutSeconds, Transform sourceTransform, bool keep = false)
         {
             if (clip == null)
@@ -624,7 +492,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip)
         {
-            return PlayAudio(Audio.AudioType.Music, clip, 1f, false, false, 1f, 1f, -1f, null);
+            return PlayAudio(AudioType.Music, clip, 1f, false, false, 1f, 1f, -1f, null);
         }
 
         /// <summary>
@@ -635,7 +503,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip, float volume)
         {
-            return PlayAudio(Audio.AudioType.Music, clip, volume, false, false, 1f, 1f, -1f, null);
+            return PlayAudio(AudioType.Music, clip, volume, false, false, 1f, 1f, -1f, null);
         }
 
         /// <summary>
@@ -648,7 +516,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip, float volume, bool loop, bool persist)
         {
-            return PlayAudio(Audio.AudioType.Music, clip, volume, loop, persist, 1f, 1f, -1f, null);
+            return PlayAudio(AudioType.Music, clip, volume, loop, persist, 1f, 1f, -1f, null);
         }
 
         /// <summary>
@@ -663,7 +531,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds)
         {
-            return PlayAudio(Audio.AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, -1f, null);
+            return PlayAudio(AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, -1f, null);
         }
 
         /// <summary>
@@ -680,7 +548,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayMusic(AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
         {
-            return PlayAudio(Audio.AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicfadeOutSeconds, sourceTransform);
+            return PlayAudio(AudioType.Music, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, currentMusicfadeOutSeconds, sourceTransform);
         }
 
         /// <summary>
@@ -690,7 +558,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlaySound(AudioClip clip)
         {
-            return PlayAudio(Audio.AudioType.Sound, clip, 1f, false, false, 0f, 0f, -1f, null);
+            return PlayAudio(AudioType.Sound, clip, 1f, false, false, 0f, 0f, -1f, null);
         }
 
         /// <summary>
@@ -701,7 +569,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlaySound(AudioClip clip, float volume)
         {
-            return PlayAudio(Audio.AudioType.Sound, clip, volume, false, false, 0f, 0f, -1f, null);
+            return PlayAudio(AudioType.Sound, clip, volume, false, false, 0f, 0f, -1f, null);
         }
 
         /// <summary>
@@ -712,7 +580,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlaySound(AudioClip clip, bool loop)
         {
-            return PlayAudio(Audio.AudioType.Sound, clip, 1f, loop, false, 0f, 0f, -1f, null);
+            return PlayAudio(AudioType.Sound, clip, 1f, loop, false, 0f, 0f, -1f, null);
         }
 
         /// <summary>
@@ -725,7 +593,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlaySound(AudioClip clip, float volume, bool loop, Transform sourceTransform)
         {
-            return PlayAudio(Audio.AudioType.Sound, clip, volume, loop, false, 0f, 0f, -1f, sourceTransform);
+            return PlayAudio(AudioType.Sound, clip, volume, loop, false, 0f, 0f, -1f, sourceTransform);
         }
 
         /// <summary>
@@ -735,7 +603,7 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayUISound(AudioClip clip)
         {
-            return PlayAudio(Audio.AudioType.UISound, clip, 1f, false, false, 0f, 0f, -1f, null);
+            return PlayAudio(AudioType.UISound, clip, 1f, false, false, 0f, 0f, -1f, null);
         }
 
         /// <summary>
@@ -746,15 +614,15 @@ namespace Hellmade.Sound
         /// <returns>The ID of the created Audio object</returns>
         public static int PlayUISound(AudioClip clip, float volume)
         {
-            return PlayAudio(Audio.AudioType.UISound, clip, volume, false, false, 0f, 0f, -1f, null);
+            return PlayAudio(AudioType.UISound, clip, volume, false, false, 0f, 0f, -1f, null);
         }
 
-        private static int PlayAudio(Audio.AudioType audioType, AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
+        private static int PlayAudio(AudioType audioType, AudioClip clip, float volume, bool loop, bool persist, float fadeInSeconds, float fadeOutSeconds, float currentMusicfadeOutSeconds, Transform sourceTransform)
         {
             int audioID = PrepareAudio(audioType, clip, volume, loop, persist, fadeInSeconds, fadeOutSeconds, sourceTransform);
 
             // Stop all current music playing
-            if (audioType == Audio.AudioType.Music)
+            if (audioType == AudioType.Music)
             {
                 StopAllMusic(currentMusicfadeOutSeconds);
             }
@@ -792,7 +660,7 @@ namespace Hellmade.Sound
         /// </summary>
         public static void StopAllMusic()
         {
-            StopAllAudio(Audio.AudioType.Music, -1f);
+            StopAllAudio(AudioType.Music, -1f);
         }
 
         /// <summary>
@@ -801,7 +669,7 @@ namespace Hellmade.Sound
         /// <param name="fadeOutSeconds"> How many seconds it needs for all music audio to fade out. It will override  their own fade out seconds. If -1 is passed, all music will keep their own fade out seconds</param>
         public static void StopAllMusic(float fadeOutSeconds)
         {
-            StopAllAudio(Audio.AudioType.Music, fadeOutSeconds);
+            StopAllAudio(AudioType.Music, fadeOutSeconds);
         }
 
         /// <summary>
@@ -809,7 +677,7 @@ namespace Hellmade.Sound
         /// </summary>
         public static void StopAllSounds()
         {
-            StopAllAudio(Audio.AudioType.Sound, -1f);
+            StopAllAudio(AudioType.Sound, -1f);
         }
 
         /// <summary>
@@ -817,10 +685,10 @@ namespace Hellmade.Sound
         /// </summary>
         public static void StopAllUISounds()
         {
-            StopAllAudio(Audio.AudioType.UISound, -1f);
+            StopAllAudio(AudioType.UISound, -1f);
         }
 
-        private static void StopAllAudio(Audio.AudioType audioType, float fadeOutSeconds)
+        private static void StopAllAudio(AudioType audioType, float fadeOutSeconds)
         {
             Dictionary<int, Audio> audioDict = GetAudioTypeDictionary(audioType);
 
@@ -855,7 +723,7 @@ namespace Hellmade.Sound
         /// </summary>
         public static void PauseAllMusic()
         {
-            PauseAllAudio(Audio.AudioType.Music);
+            PauseAllAudio(AudioType.Music);
         }
 
         /// <summary>
@@ -863,7 +731,7 @@ namespace Hellmade.Sound
         /// </summary>
         public static void PauseAllSounds()
         {
-            PauseAllAudio(Audio.AudioType.Sound);
+            PauseAllAudio(AudioType.Sound);
         }
 
         /// <summary>
@@ -871,10 +739,10 @@ namespace Hellmade.Sound
         /// </summary>
         public static void PauseAllUISounds()
         {
-            PauseAllAudio(Audio.AudioType.UISound);
+            PauseAllAudio(AudioType.UISound);
         }
 
-        private static void PauseAllAudio(Audio.AudioType audioType)
+        private static void PauseAllAudio(AudioType audioType)
         {
             Dictionary<int, Audio> audioDict = GetAudioTypeDictionary(audioType);
 
@@ -905,7 +773,7 @@ namespace Hellmade.Sound
         /// </summary>
         public static void ResumeAllMusic()
         {
-            ResumeAllAudio(Audio.AudioType.Music);
+            ResumeAllAudio(AudioType.Music);
         }
 
         /// <summary>
@@ -913,7 +781,7 @@ namespace Hellmade.Sound
         /// </summary>
         public static void ResumeAllSounds()
         {
-            ResumeAllAudio(Audio.AudioType.Sound);
+            ResumeAllAudio(AudioType.Sound);
         }
 
         /// <summary>
@@ -921,10 +789,10 @@ namespace Hellmade.Sound
         /// </summary>
         public static void ResumeAllUISounds()
         {
-            ResumeAllAudio(Audio.AudioType.UISound);
+            ResumeAllAudio(AudioType.UISound);
         }
 
-        private static void ResumeAllAudio(Audio.AudioType audioType)
+        private static void ResumeAllAudio(AudioType audioType)
         {
             Dictionary<int, Audio> audioDict = GetAudioTypeDictionary(audioType);
 
@@ -941,7 +809,7 @@ namespace Hellmade.Sound
 
     public class AudioProperties
     {
-        public Audio.AudioType audioType;
+        public AudioType audioType;
         public AudioClip clip;
         public float volume;
         public bool loop;
@@ -956,14 +824,14 @@ namespace Hellmade.Sound
             this.volume = 1f;
             switch (audioType)
             {
-                case Audio.AudioType.Music:
+                case AudioType.Music:
                     this.fadeInSeconds = 1f;
                     this.fadeOutSeconds = 1f;
                     break;
             }
         }
 
-        public AudioProperties(Audio.AudioType audioType, AudioClip clip, float volume = 1f, bool loop = false, bool persist = false,
+        public AudioProperties(AudioType audioType, AudioClip clip, float volume = 1f, bool loop = false, bool persist = false,
             bool keep = false, float fadeInSeconds= 0f, float fadeOutSeconds = 0f, Transform sourceTransform = null)
         {
             this.audioType = audioType;

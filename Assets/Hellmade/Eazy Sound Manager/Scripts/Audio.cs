@@ -299,16 +299,6 @@ namespace Hellmade.Sound
         /// </summary>
         public float FadeOutSeconds { get; set; }
 
-        /// <summary>
-        /// Enum representing the type of audio
-        /// </summary>
-        public enum AudioType
-        {
-            Music,
-            Sound,
-            UISound
-        }
-
         private static int audioCounter = 0;
 
         private AudioClip clip;
@@ -605,5 +595,15 @@ namespace Hellmade.Sound
                 IsPlaying = AudioSource.isPlaying;
             }
         }
+    }
+
+    /// <summary>
+    /// Enum representing the type of audio
+    /// </summary>
+    public enum AudioType
+    {
+        Music,
+        Sound,
+        UISound
     }
 }
